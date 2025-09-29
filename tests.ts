@@ -52,7 +52,7 @@ const auMoinsUnLourd = penguins.some(p => p.body_mass_g != null && p.body_mass_g
 console.log("• some() - Y a-t-il des pingouins > 6000g?", auMoinsUnLourd);
 
 // every() - Teste si tous les éléments satisfent une condition
-const tousOntMasse = penguins.every(/* TODO */);
+const tousOntMasse = penguins.every(p => p.body_mass_g != null && p.body_mass_g > 0);
 console.log("• every() - Tous ont une masse > 0?", tousOntMasse);
 console.log();
 
@@ -61,10 +61,10 @@ console.log();
 console.log("--- MÉTHODES DE FILTRAGE ---");
 
 // filter() - Crée un nouveau tableau avec les éléments qui passent un test
-const pingousinsMales = penguins.filter(/* TODO */);
+const pingousinsMales = penguins.filter(p => p.sex === "male");
 console.log("• filter() - Nombre de mâles:", pingousinsMales.length);
 
-const pingouinsLourds = penguins.filter(/* TODO */);
+const pingouinsLourds = penguins.filter(p => p.body_mass_g != null && p.body_mass_g > 5000);
 console.log("• filter() - Pingouins > 5000g:", pingouinsLourds.length);
 console.log();
 
@@ -79,12 +79,24 @@ const descriptions = penguins.slice(0, 3).map(p =>
 console.log("• map() - Descriptions des 3 premiers:");
 descriptions.forEach(desc => console.log("  ", desc));
 
+
+const array1 = [0, 1, 2, 3];
+
+const map1 = array1.map((x) => x * 2);
+
+console.log(map1);
+
+console.log("• map() - Chaque élément * 2 :");
+
+
+
+
 /* IMPORTANT : noter ce code 
  * L'usage de `map` pour n'extraire qu'une propriété.
  * Et l'usage de `[...new Set()]` sur le résultat pour ne garder que les noms uniques
  * Cela servira pour le prochain TP
  */
-const nomsEspeces = penguins.map(/* TODO */);
+const nomsEspeces = penguins.map(species => species.species);
 console.log("• map() - Espèces uniques:", [...new Set(nomsEspeces)]);
 
 // flatMap() - Applique une fonction puis aplatit d'un niveau
@@ -95,12 +107,12 @@ console.log("• flatMap() - Caractéristiques aplaties:", caracteristiques);
 
 // reduce() - Réduit le tableau à une seule valeur
 const masseTotale = penguins.reduce((total, p) => 
-    p.body_mass_g != null ? total + /* TODO */ : total, 0
+    p.body_mass_g != null ? total + p.body_mass_g : total, 0
 );
 console.log("• reduce() - Masse totale:", masseTotale, "grammes");
 
 const nbrParEspece = penguins.reduce((acc, p) => {
-    acc[/* TODO */] = (acc[/* TODO */] || 0) + 1;
+    acc[p.species] = (acc[p.species] || 0) + 1;
     return acc;
 }, {} as Record<string, number>);
 console.log("• reduce() - Comptage par espèce:", nbrParEspece);
@@ -119,7 +131,7 @@ console.log("--- MÉTHODES DE TRI ---");
 // sort() - Trie les éléments (modifie le tableau original)
 const massesCopie = penguins.slice(0, 5).map(p => p.body_mass_g).filter(m => m != null);
 console.log("• sort() - Masses avant tri:", massesCopie);
-massesCopie.sort((a, b) => /* TODO */); // différence pour tri
+massesCopie.sort((a, b) => a - b); // différence pour tri
 console.log("• sort() - Masses après tri croissant:", massesCopie);
 
 // Tri par espèce
