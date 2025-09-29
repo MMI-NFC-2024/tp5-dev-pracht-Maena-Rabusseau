@@ -136,7 +136,7 @@ console.log("• sort() - Masses après tri croissant:", massesCopie);
 
 // Tri par espèce
 const pingouinsParEspece = penguins.slice(0, 10).sort((a, b) => 
-    /* TODO */.localeCompare(/* TODO */)
+    a.species.localeCompare(b.species)
 );
 console.log("• sort() - 10 premiers triés par espèce:");
 pingouinsParEspece.forEach(p => console.log(`  ${p.species} - ${p.island}`));
@@ -149,7 +149,7 @@ console.log("--- MÉTHODES D'ITÉRATION ---");
 // forEach() - Exécute une fonction pour chaque élément
 console.log("• forEach() - Affichage des 3 premiers pingouins:");
 penguins.slice(0, 3).forEach((p, index) => {
-    console.log(`  ${index + 1}. ${/* TODO  espece */} de ${/* TODO ile */} (${/* TODO masse */}g)`);
+    console.log(`  ${index + 1}. ${p.species} de ${p.island} (${p.body_mass_g}g)`);
 });
 
 
@@ -160,7 +160,7 @@ console.log("--- MÉTHODES DE CONVERSION ---");
 // join() - Joint tous les éléments en une chaîne
 const premiersNoms = penguins.slice(0, 5).map(p => p.species);
 console.log("• join() - Espèces séparées par ' | ':", premiersNoms.join(" | "));
-console.log("• join() - Espèces séparées par des virgules:", /* TODO */);
+console.log("• join() - Espèces séparées par des virgules:", premiersNoms.join(", "));
 
 // toString() - Convertit en chaîne (équivalent à join(','))
 console.log("• toString() - Premières masses:", penguins.slice(0, 3).map(p => p.body_mass_g).toString());
@@ -173,7 +173,7 @@ console.log("--- MÉTHODES DE CONCATÉNATION ---");
 // concat() - Joint des tableaux
 const adelies = penguins.filter(p => p.species === "Adelie").slice(0, 2);
 const chinstraps = penguins.filter(p => p.species === "Chinstrap").slice(0, 2);
-const melange = /* TODO */;
+const melange = adelies.concat(chinstraps);
 console.log("• concat() - Mélange Adelies + Chinstraps:");
 melange.forEach(p => console.log(`  ${p.species} de ${p.island}`));
 console.log();
@@ -185,8 +185,8 @@ console.log("--- MÉTHODES D'APLATISSEMENT ---");
 // flat() - Aplatit les tableaux imbriqués
 const groupesParIle = [
     penguins.filter(p => p.island === "Torgersen").slice(0, 2).map(p => p.species),
-    penguins.filter(p => p.island === "Biscoe").slice(0, 2).map(/* TODO */),
-    penguins.filter(p => p.island === "Dream").slice(0, 2).map(/* TODO */)
+    penguins.filter(p => p.island === "Biscoe").slice(0, 2).map(p => p.species),
+    penguins.filter(p => p.island === "Dream").slice(0, 2).map(p => p.species)
 ];
 console.log("• flat() - Groupes par île avant aplatissement:", groupesParIle);
 console.log("• flat() - Après aplatissement:", groupesParIle.flat());
@@ -198,10 +198,10 @@ console.log("--- STATISTIQUES FINALES ---");
 
 // Calculs statistiques utilisant différentes méthodes
 const masses = penguins.map(p => p.body_mass_g).filter(m => m != null);
-const masseTotaleCalc = masses.reduce((sum, mass) => /* TODO */, 0);
+const masseTotaleCalc = masses.reduce((sum, mass) => sum + mass, 0);
 const masseMoyenne = masseTotaleCalc / masses.length;
 const masseMin = Math.min(...masses);
-const masseMax = /* TODO */;
+const masseMax = Math.max(...masses);
 
 console.log("• Statistiques des masses:");
 console.log(`  - Masse moyenne: ${masseMoyenne.toFixed(1)}g`);
@@ -232,7 +232,7 @@ console.log("\n--- GROUPEMENT AVEC Object.groupBy ---");
 
 // Groupement par île
 console.log("• Object.groupBy() - Répartition par île:");
-const pingouinsParIle = Object.groupBy(penguins, /* TODO */);
+const pingouinsParIle = Object.groupBy(penguins, p => p.island);
 for (const [ile, pingouins] of Object.entries(pingouinsParIle)) {
     console.log(`  ${ile}: ${pingouins?.length || 0} pingouins`);
 }
@@ -246,7 +246,7 @@ const pingouinsParEspeceEtSexe = Object.groupBy(penguins, pingouin =>
 
 // Groupement par sexe
 console.log("\n• Object.groupBy() - Répartition par sexe:");
-const pingouinsParSexe = Object.groupBy(penguins, /* TODO remplacer null par "inconnu" */);
+const pingouinsParSexe = Object.groupBy(penguins, pingouin => pingouin.sex || 'inconnu');
 for (const [sexe, pingouins] of Object.entries(pingouinsParSexe)) {
     console.log(`  ${sexe}: ${pingouins?.length || 0} pingouins`);
 }
